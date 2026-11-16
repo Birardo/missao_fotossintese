@@ -3,35 +3,91 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Jogo educacional sobre fotossíntese com três níveis e 12 questões.">
+  <meta name="description" content="Jogo educacional sobre fotossíntese com login, banco de moedas e ranking.">
   <title>Missão Fotossíntese</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#" aria-label="Missão Fotossíntese - início">
+    <a class="brand" href="#" id="brand-home" aria-label="Missão Fotossíntese - início">
       <span class="brand-icon">✿</span>
       <span>MISSÃO <strong>FOTOSSÍNTESE</strong></span>
     </a>
-    <div class="top-stats">
-      <span>⭐ <strong id="header-score">0</strong> pontos</span>
-      <span>🏆 <strong id="header-badges">0</strong>/3 conquistas</span>
+
+    <div class="top-actions" id="top-actions">
+      <div class="top-stats hidden" id="user-stats-bar">
+        <button class="pill-btn" id="open-bank-btn" title="Abrir EcoBanco">🪙 <strong id="header-coins">0</strong></button>
+        <button class="pill-btn" id="open-ranking-btn" title="Ver Ranking">📊 <strong id="header-score">0</strong> pts</button>
+        <span class="badge-pill">🏆 <strong id="header-badges">0</strong>/3</span>
+        <div class="user-chip">
+          <span id="header-avatar">🌱</span>
+          <strong id="header-username">Visitante</strong>
+          <button id="logout-btn" class="btn-link" title="Sair da conta">Sair</button>
+        </div>
+      </div>
+      <div id="guest-actions">
+        <button class="btn btn-secondary btn-sm" id="nav-ranking-btn">📊 Ranking</button>
+        <button class="btn btn-primary btn-sm" id="nav-login-btn">Entrar / Cadastrar</button>
+      </div>
     </div>
   </header>
 
   <main class="container">
+    <!-- TELA DE LOGIN / CADASTRO -->
+    <section id="auth-screen" class="screen auth-box hidden">
+      <div class="auth-header">
+        <span class="eyebrow">ACESSO DO PESQUISADOR</span>
+        <h2 id="auth-title">Entrar na Missão</h2>
+        <p id="auth-subtitle">Salve seus pontos, gerencie suas BioMoedas no EcoBanco e dispute o topo do ranking.</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-mode="login">Entrar</button>
+        <button type="button" class="auth-tab" data-mode="register">Criar Conta</button>
+      </div>
+
+      <form id="auth-form" class="auth-form">
+        <div class="form-group">
+          <label for="auth-username">Nome de usuário</label>
+          <input type="text" id="auth-username" placeholder="Ex: botanico_pro" required minlength="3" maxlength="18">
+        </div>
+        <div class="form-group">
+          <label for="auth-password">Senha</label>
+          <input type="password" id="auth-password" placeholder="Mínimo 4 caracteres" required minlength="4">
+        </div>
+        <div class="form-group hidden" id="avatar-picker-group">
+          <label>Escolha seu Avatar Inicial</label>
+          <div class="avatar-options" id="avatar-options">
+            <button type="button" class="avatar-opt selected" data-avatar="🌱">🌱</button>
+            <button type="button" class="avatar-opt" data-avatar="🌿">🌿</button>
+            <button type="button" class="avatar-opt" data-avatar="🌻">🌻</button>
+            <button type="button" class="avatar-opt" data-avatar="🌵">🌵</button>
+            <button type="button" class="avatar-opt" data-avatar="🔬">🔬</button>
+          </div>
+        </div>
+        <p id="auth-error" class="auth-error hidden"></p>
+        <button type="submit" class="btn btn-primary full-width" id="auth-submit-btn">Acessar conta →</button>
+        <button type="button" class="btn btn-secondary full-width" id="auth-cancel-btn">Voltar ao início</button>
+      </form>
+    </section>
+
+    <!-- TELA INICIAL -->
     <section id="home-screen" class="screen hero">
       <div class="hero-copy">
         <span class="eyebrow">UMA AVENTURA PELO MUNDO DAS PLANTAS</span>
         <h1>Descubra o poder<br>da <span>fotossíntese!</span></h1>
-        <p>Explore como as plantas transformam luz, água e gás carbônico em energia. Supere três níveis e torne-se um Mestre da Fotossíntese.</p>
+        <p>Explore como as plantas transformam luz, água e gás carbônico em energia. Responda novas questões, acumule BioMoedas no EcoBanco e suba no Ranking.</p>
         <div class="hero-facts">
-          <div><strong>12</strong><span>questões</span></div>
+          <div><strong>12</strong><span>novas questões</span></div>
           <div><strong>3</strong><span>níveis</span></div>
           <div><strong>120</strong><span>pontos possíveis</span></div>
         </div>
-        <button id="start-button" class="btn btn-primary">Iniciar missão <span>→</span></button>
+        <div class="hero-cta-group">
+          <button id="start-button" class="btn btn-primary">Iniciar missão <span>→</span></button>
+          <button id="home-bank-btn" class="btn btn-secondary">🏦 EcoBanco</button>
+          <button id="home-ranking-btn" class="btn btn-secondary">📊 Ranking</button>
+        </div>
       </div>
       <div class="plant-art" aria-label="Ilustração decorativa de uma planta">
         <div class="sun">☀</div>
@@ -42,17 +98,21 @@
         <div class="ground"></div>
         <span class="art-label">CRESCER É<br>APRENDER</span>
       </div>
-      <div class="home-note">🌱 Aprenda no seu ritmo: cada resposta traz uma explicação.</div>
+      <div class="home-note">🌱 Faça login para registrar sua pontuação no ranking e usar suas moedas na loja do EcoBanco!</div>
     </section>
 
+    <!-- TELA DO JOGO -->
     <section id="game-screen" class="screen hidden">
       <div class="game-heading">
         <div>
           <span class="eyebrow">SUA JORNADA</span>
           <h1 id="level-title">Nível básico</h1>
-          <p id="level-subtitle">Reconheça os conceitos fundamentais.</p>
+          <p id="level-subtitle">Reconheça as estruturas e etapas iniciais.</p>
         </div>
-        <div class="score-card"><span>SEU PLACAR</span><strong><b id="score">0</b> pts</strong></div>
+        <div class="score-cards-row">
+          <div class="score-card"><span>BIOMOEDAS</span><strong>🪙 <b id="game-coins">0</b></strong></div>
+          <div class="score-card"><span>SEU PLACAR</span><strong><b id="score">0</b> pts</strong></div>
+        </div>
       </div>
 
       <nav class="level-track" aria-label="Progresso dos níveis">
@@ -81,16 +141,13 @@
 
         <aside class="rewards-panel">
           <div class="rewards-title"><span>🌿</span><div><h3>Conquistas</h3><p>Suas recompensas da missão</p></div></div>
-          <div id="reward-list" class="reward-list">
-            <div class="reward locked-reward"><span>🌱</span><div><strong>Pequeno Botânico</strong><small>Conclua o nível básico</small></div><b>🔒</b></div>
-            <div class="reward locked-reward"><span>🔬</span><div><strong>Cientista Verde</strong><small>Conclua o intermediário</small></div><b>🔒</b></div>
-            <div class="reward locked-reward"><span>🏆</span><div><strong>Mestre da Fotossíntese</strong><small>Conclua o nível avançado</small></div><b>🔒</b></div>
-          </div>
-          <div class="tip-box"><strong>💡 Dica verde</strong><p>Leia a explicação após cada resposta. Ela ajuda você a avançar com mais conhecimento!</p></div>
+          <div id="reward-list" class="reward-list"></div>
+          <div class="tip-box"><strong>🪙 Bônus do EcoBanco</strong><p>Cada acerto rende +10 pontos e +15 BioMoedas para trocar por itens no banco!</p></div>
         </aside>
       </div>
     </section>
 
+    <!-- RESULTADO DO NÍVEL -->
     <section id="level-result-screen" class="screen hidden result-screen">
       <div class="result-icon" id="level-result-icon">🌱</div>
       <span class="eyebrow">ETAPA CONCLUÍDA</span>
@@ -98,23 +155,112 @@
       <p id="level-result-message"></p>
       <div class="result-stats">
         <div><strong id="level-correct">0/4</strong><span>acertos</span></div>
-        <div><strong id="level-points">0</strong><span>pontos nesta etapa</span></div>
+        <div><strong id="level-points">0</strong><span>pontos</span></div>
+        <div><strong id="level-coins-earned">+0</strong><span>BioMoedas</span></div>
       </div>
       <div id="earned-reward" class="earned-reward"></div>
       <button id="continue-button" class="btn btn-primary">Continuar missão →</button>
       <button id="retry-button" class="btn btn-secondary hidden">Tentar nível novamente</button>
     </section>
 
+    <!-- TELA FINAL -->
     <section id="final-screen" class="screen result-screen hidden">
       <div class="result-icon">🏆</div>
       <span class="eyebrow">MISSÃO COMPLETA</span>
       <h1>Você é um <span>Mestre da Fotossíntese!</span></h1>
-      <p>Você concluiu os três níveis e demonstrou que conhece o processo que sustenta grande parte da vida na Terra.</p>
+      <p>Você concluiu os três níveis e sua pontuação foi atualizada no Ranking Geral.</p>
       <div class="final-score"><strong id="final-points">120</strong><span>de 120 pontos</span></div>
       <div id="final-rewards" class="final-rewards"></div>
-      <button id="restart-button" class="btn btn-primary">↻ Jogar novamente</button>
+      <div class="hero-cta-group" style="justify-content: center;">
+        <button id="final-ranking-btn" class="btn btn-primary">📊 Ver minha posição no Ranking</button>
+        <button id="restart-button" class="btn btn-secondary">↻ Jogar novamente</button>
+      </div>
     </section>
   </main>
+
+  <!-- MODAL DO ECOBANCO -->
+  <div id="bank-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">SISTEMA FINANCEIRO BOTÂNICO</span>
+          <h2>🏦 EcoBanco</h2>
+        </div>
+        <button class="close-modal" data-close="bank-modal">✕</button>
+      </div>
+
+      <div class="bank-balance-card">
+        <div>
+          <span>SALDO DISPONÍVEL</span>
+          <strong>🪙 <b id="bank-balance">0</b> BioMoedas</strong>
+        </div>
+        <div class="bank-user-info">
+          <span id="bank-user-title">Explorador Iniciante</span>
+          <small id="bank-user-name">@usuario</small>
+        </div>
+      </div>
+
+      <div class="bank-tabs">
+        <button class="bank-tab active" data-btab="shop">🛍️ Loja de Itens</button>
+        <button class="bank-tab" data-btab="transfer">💸 Transferir</button>
+        <button class="bank-tab" data-btab="history">📜 Extrato</button>
+      </div>
+
+      <!-- ABA LOJA -->
+      <div id="btab-shop" class="bank-pane">
+        <div id="shop-items" class="shop-grid"></div>
+      </div>
+
+      <!-- ABA TRANSFERÊNCIA -->
+      <div id="btab-transfer" class="bank-pane hidden">
+        <form id="transfer-form" class="transfer-form">
+          <div class="form-group">
+            <label for="transfer-to">Destinatário (Usuário cadastrado)</label>
+            <input type="text" id="transfer-to" placeholder="Digite o nome de usuário" required>
+          </div>
+          <div class="form-group">
+            <label for="transfer-amount">Valor (BioMoedas)</label>
+            <input type="number" id="transfer-amount" min="5" step="5" placeholder="Ex: 20" required>
+          </div>
+          <p id="transfer-msg" class="transfer-msg hidden"></p>
+          <button type="submit" class="btn btn-primary full-width">Enviar BioMoedas →</button>
+        </form>
+      </div>
+
+      <!-- ABA EXTRATO -->
+      <div id="btab-history" class="bank-pane hidden">
+        <ul id="bank-history-list" class="history-list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE RANKING -->
+  <div id="ranking-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="eyebrow">CLASSIFICAÇÃO GERAL</span>
+          <h2>📊 Ranking dos Pesquisadores</h2>
+        </div>
+        <button class="close-modal" data-close="ranking-modal">✕</button>
+      </div>
+      <p class="modal-desc">Os melhores botânicos ordenados por pontuação total e BioMoedas acumuladas.</p>
+      <div class="ranking-table-wrap">
+        <table class="ranking-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Pesquisador</th>
+              <th>Título</th>
+              <th>Moedas</th>
+              <th>Pontos</th>
+            </tr>
+          </thead>
+          <tbody id="ranking-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
   <footer>MISSÃO FOTOSSÍNTESE <span>•</span> JOGO EDUCACIONAL DE BIOLOGIA</footer>
 </body>
